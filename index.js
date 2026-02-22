@@ -3,13 +3,15 @@ const cors = require('cors');
 const axios = require('axios');
 const { parseArgs } = require('util');
 require('dotenv').config();
+const cron = require('node-cron');
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // ─── Middleware ─────────────────────────────────────────
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000'],
+  origin: ['http://localhost:5173', 'http://localhost:3000', 'https://medconnectform.netlify.app/'],
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type'],
 }));
@@ -144,6 +146,22 @@ app.post('/api/send', async (req, res) => {
       success: false,
       error: error.response?.data || error.message,
     });
+  }
+});
+
+
+app.get('/keep-alive', (req, res) => {
+  res.json('ok');
+});
+
+
+
+cron.schedule('*/10 * * * *', async () => {
+  try {
+    const res = await axios.get(`https://team-world-cup.onrender.com/keep-alive`);
+
+  } catch (err) {
+    console.error('Ping failed:', err.message);
   }
 });
 

@@ -158,7 +158,7 @@ app.get('/keep-alive', (req, res) => {
 
 cron.schedule('*/10 * * * *', async () => {
   try {
-    const res = await axios.get(`https://team-world-cup.onrender.com/keep-alive`);
+    const res = await axios.get(`https://form-backend-qlqu.onrender.com/keep-alive`);
 
   } catch (err) {
     console.error('Ping failed:', err.message);
